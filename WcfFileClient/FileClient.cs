@@ -17,10 +17,10 @@ namespace BBS
     public class FileClient
     {
 
-        private EndpointAddress address_http = new EndpointAddress("http://20.41.115.26:9210/FileService");
-        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.41.115.26:9220/FileService");
+        private EndpointAddress address_http = new EndpointAddress("http://146.56.155.85:9210/FileService");
+        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://146.56.155.85:9220/FileService");
 
-        // private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9210/FileService");
+        //private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9210/FileService");
         //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9220/FileService");
         //private EndpointAddress address_http = new EndpointAddress("http://localhost:9210/FileService");
         //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://localhost:9220/FileService");
@@ -79,6 +79,7 @@ namespace BBS
                 throw ;
             }            
         }
+
         public FileData DownloadFile(DownloadRequest request)
         {
             try
@@ -91,6 +92,7 @@ namespace BBS
                 throw ;
             }
         }
+     
         public Task<FileData> DownloadFileAsync(DownloadRequest request)
         {
             try
@@ -114,10 +116,16 @@ namespace BBS
             binding.TransferMode = TransferMode.Streamed;
             binding.MessageEncoding = WSMessageEncoding.Mtom;
             binding.Security.Mode = BasicHttpSecurityMode.None;
-            // < readerQuotas maxStringContentLength = "2147483647" />
     
             binding.MaxReceivedMessageSize = 2147483647;
-          
+            binding.MaxBufferSize = 65536;
+
+            binding.ReaderQuotas.MaxStringContentLength = 2147483647;
+            binding.ReaderQuotas.MaxBytesPerRead = 2147483647;
+            binding.ReaderQuotas.MaxArrayLength = 2147483647;
+            binding.ReaderQuotas.MaxNameTableCharCount = 2147483647;
+            binding.ReaderQuotas.MaxDepth = 2147483647;
+
             binding.OpenTimeout = TimeSpan.FromMinutes(5);
             binding.CloseTimeout = TimeSpan.FromMinutes(5);
             binding.ReceiveTimeout = TimeSpan.FromMinutes(15);
@@ -133,6 +141,7 @@ namespace BBS
             binding.Security.Mode =  SecurityMode.None;
 
             binding.MaxReceivedMessageSize = 2147483647;
+            binding.MaxBufferSize = 65536;
 
             binding.OpenTimeout = TimeSpan.FromMinutes(5);
             binding.CloseTimeout = TimeSpan.FromMinutes(5);
@@ -147,5 +156,38 @@ namespace BBS
             ((IClientChannel)MyChannel).Close();
             MyFactory.Close();
         }
+
+        //public Task<FileData> DownloadFileMyAsync(DownloadRequest request)
+        //{
+        //    try
+        //    {
+        //        //return await MyChannel.DownloadFileMyAsync(request);
+        //        return MyChannel.DownloadFileMyAsync(request);
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+        ///// <summary>
+        ///// task.run(action) == Task.Factory.StartNew(action);
+        ///// </summary>
+        ///// <param name="uploadFile"></param>
+        ///// <returns></returns>
+        //public async Task UploadFileMyAsync(FileData uploadFile)
+        //{
+        //    try
+        //    {
+        //        await MyChannel.UploadFileMyAsync(uploadFile);
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
     }
 }

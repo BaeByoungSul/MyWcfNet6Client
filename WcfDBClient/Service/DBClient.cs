@@ -58,11 +58,11 @@ namespace BBS
         public DataSet? ReturnDs { get; set; }
     }
 
-
+    
     public class DBClient:IDisposable
     {
-        private EndpointAddress address_http = new EndpointAddress("http://20.41.115.26:9110/DBService");
-        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://20.41.115.26:9120/DBService");
+        private EndpointAddress address_http = new EndpointAddress("http://146.56.155.85:9110/DBService");
+        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://146.56.155.85:9120/DBService");
         //private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9110/DBService");
         //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9120/DBService");
         //private EndpointAddress address_http = new EndpointAddress("http://localhost:9110/DBService");

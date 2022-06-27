@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 namespace BBS
 {
     // CustomStream Event Args
-    public class ProgressChangedEventArgs : EventArgs
+    public class MyProgressChangedEventArgs : EventArgs
     {
         public long BytesRead;
         public long Length;
 
-        public ProgressChangedEventArgs(long bytesRead, long length)
+        public MyProgressChangedEventArgs(long bytesRead, long length)
         {
             BytesRead = bytesRead;
             Length = length;
@@ -29,7 +30,7 @@ namespace BBS
         private readonly long _length;
         private long _bytesRead;
 
-        public event EventHandler<ProgressChangedEventArgs>? ProgressChanged;
+        public event EventHandler<MyProgressChangedEventArgs>? ProgressChanged;
 
         public CustomStream(Stream fileStream, long fileLength)
         {
@@ -39,7 +40,7 @@ namespace BBS
             _bytesRead = 0;
             if (ProgressChanged != null)
             {
-                ProgressChanged(this, new ProgressChangedEventArgs(_bytesRead, _length));
+                ProgressChanged(this, new MyProgressChangedEventArgs(_bytesRead, _length));
             }
         }
 
@@ -50,7 +51,9 @@ namespace BBS
 
         public override bool CanWrite { get { return false; } }
 
-        public override long Length { get { return _length; } }
+        public override void Flush() { throw new Exception("This stream does not support writing."); }
+
+        public override long Length { get { throw new Exception("This stream does not support the Length property."); } }
 
         public override long Position
         {
@@ -61,17 +64,17 @@ namespace BBS
             }
         }
 
-        public override void Flush() { }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
             int result = _file.Read(buffer, offset, count);
+           
             _bytesRead += result;
             
             // Console.WriteLine("bytes read {0}", _bytesRead);
             if (ProgressChanged != null)
             {
-                ProgressChanged(this, new ProgressChangedEventArgs(_bytesRead, _length));
+                ProgressChanged(this, new MyProgressChangedEventArgs(_bytesRead, _length));
             }
             return result;
         }

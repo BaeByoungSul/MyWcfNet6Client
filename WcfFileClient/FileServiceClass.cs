@@ -21,11 +21,18 @@ namespace BBS
 
         FileData DownloadFile(DownloadRequest request);
 
+
         [OperationContract]
         void UploadFile(FileData uploadFile);
 
+
         [OperationContract]
         CheckFileResponse CheckFile(string fileName);
+       
+        //[OperationContract]
+        //Task UploadFileMyAsync(FileData uploadFile);
+        //[OperationContract]
+        //Task<FileData> DownloadFileMyAsync(DownloadRequest request);
 
     }
     [MessageContract]
@@ -46,7 +53,7 @@ namespace BBS
         public long FileLength { get; set; }
 
         [MessageBodyMember(Order = 1)]
-        public Stream MyStream { get; set; }
+        public Stream? MyStream { get; set; }
 
         public void Dispose()
         {
@@ -58,14 +65,6 @@ namespace BBS
 
     }
 
-    [MessageContract]
-    public class DownloadResponse
-    {
-        [MessageHeader]
-        public long FileLength { get; set; }
-        [MessageBodyMember]
-        public Stream MyStream { get; set; }
-    }
     [DataContract]
     public class CheckFileResponse
     {

@@ -105,7 +105,15 @@ namespace WcfDBClient
 
                 SvcReturnDs rtn = _cli.ExecQuery(mycmds);
 
-                dgv2.DataSource = rtn.ReturnDs?.Tables[0];
+                if (rtn.ReturnCD.Equals("OK"))
+                {
+                    dgv2.DataSource = rtn.ReturnDs?.Tables[0];
+                }else
+                {
+                    MessageBox.Show(rtn.ReturnMsg);
+                }
+
+                
 
             }
             catch (Exception ex)
@@ -153,8 +161,15 @@ namespace WcfDBClient
                 //_cli.SetTransOption(System.Transactions.TransactionScopeOption.Suppress);
 
                 SvcReturnList<DBOutPut> rtn = _cli.ExecQuery<DBOutPut>(mycmds);
-
-                dgv1.DataSource = rtn.ReturnList;
+                
+                if (rtn.ReturnCD.Equals("OK"))
+                {
+                    dgv1.DataSource = rtn.ReturnList;
+                }
+                else
+                {
+                    MessageBox.Show(rtn.ReturnMsg);
+                }
 
             }
             catch (Exception ex)

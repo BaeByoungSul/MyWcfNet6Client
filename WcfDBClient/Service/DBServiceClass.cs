@@ -87,9 +87,8 @@ namespace BBS
         public MyParaValue()
         {
             ParameterName = String.Empty;
-            ParaValue = String.Empty;
         }
-        public MyParaValue(string parameterName, string paraValue)
+        public MyParaValue(string parameterName, string? paraValue)
         {
             ParameterName = parameterName;
             ParaValue = paraValue;

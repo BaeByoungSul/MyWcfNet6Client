@@ -99,7 +99,7 @@ namespace BBS
             BasicHttpBinding binding = new BasicHttpBinding();
 
             binding.TransferMode = TransferMode.Streamed;
-            binding.MessageEncoding = WSMessageEncoding.Mtom;
+            //binding.MessageEncoding = WSMessageEncoding.Mtom;
             binding.Security.Mode = BasicHttpSecurityMode.None;
 
             binding.MaxBufferSize = 2147483647;

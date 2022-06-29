@@ -181,7 +181,7 @@ namespace WcfDBClient
             _cmd.Parameters = new MyPara[3];
 
             _cmd.Parameters[0] = new MyPara("P_TEST_ID", (int)MySqlDbType.UInt64, (int)ParameterDirection.Input,
-                "MST", "@TEST_ID");
+                "MST", "P_TEST_ID");
             _cmd.Parameters[1] = new MyPara("P_TEST_DTL_NM", (int)MySqlDbType.VarChar, (int)ParameterDirection.Input);
             _cmd.Parameters[2] = new MyPara("P_AMOUNT", (int)MySqlDbType.Decimal, (int)ParameterDirection.Input);
 
@@ -210,6 +210,54 @@ namespace WcfDBClient
             return _cmd;
         }
 
+        private void btn_ins2_Click(object sender, EventArgs e)
+        {
+            // Create Db Command
+            List<MyCommand> mycmds = new List<MyCommand>();
+            MyCommand cmdMst = ITEM_MST_Command();
+            MyCommand cmdDtl = ITEM_DTL_Command();
+            mycmds.AddRange(new MyCommand[] { cmdMst, cmdDtl });
 
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                if (cbo1.Text == String.Empty)
+                {
+                    MessageBox.Show("Select Binding");
+                    return;
+                }
+
+                // 기본 binding
+                MyBindinEnum bindinEnum = MyBindinEnum.Http;
+
+                if (cbo1.Text.Equals("Http")) bindinEnum = MyBindinEnum.Http;
+                else if (cbo1.Text.Equals("NetTcp")) bindinEnum = MyBindinEnum.NetTcp;
+
+                DBClient _cli = new DBClient(bindinEnum);
+
+                SvcReturnDs rtn = _cli.ExecQuery(mycmds);
+
+                if (rtn.ReturnCD.Equals("OK"))
+                {
+                    dgv2.DataSource = rtn.ReturnDs?.Tables[0];
+                }
+                else
+                {
+                    MessageBox.Show(rtn.ReturnMsg);
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
     }
 }

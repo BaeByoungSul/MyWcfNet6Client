@@ -12,8 +12,8 @@ namespace WcfDBClient
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             //Application.Run(new frmMSSQL());
-            //Application.Run(new frmOracle());
-            Application.Run(new frmMySQL());
+            Application.Run(new frmOracle());
+            //Application.Run(new frmMySQL());
         }
     }
 }

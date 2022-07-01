@@ -14,6 +14,7 @@ namespace WcfDBClient
             //Application.Run(new frmMSSQL());
             Application.Run(new frmOracle());
             //Application.Run(new frmMySQL());
+            //Application.Run(new frmOracleWallet());
         }
     }
 }

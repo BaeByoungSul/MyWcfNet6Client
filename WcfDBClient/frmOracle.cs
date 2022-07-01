@@ -21,6 +21,11 @@ namespace WcfDBClient
 
         private void btn_sel_1_Click(object sender, EventArgs e)
         {
+            // Connection명
+            if (cbo2.SelectedIndex < 0) cbo2.SelectedIndex = 0;
+            
+            string conName = cbo2.Text;
+
             // 기본 binding
             MyBindinEnum bindinEnum = MyBindinEnum.Http;
 
@@ -29,8 +34,7 @@ namespace WcfDBClient
 
             DBClient _cli = new DBClient(bindinEnum);
 
-
-            SvcReturnDs rtn = _cli.GetDataSet(GetCmd_Sel_1());
+            SvcReturnDs rtn = _cli.GetDataSet(GetCmd_Sel_1(conName));
 
             dgv1.DataSource = null;
             dgv2.DataSource = null;
@@ -41,10 +45,10 @@ namespace WcfDBClient
                 
             }
         }
-        private MyCommand GetCmd_Sel_1()
+        private MyCommand GetCmd_Sel_1(string conName)
         {
 
-            MyCommand _cmd = new MyCommand("MST", "AWS_ORA_DB",
+            MyCommand _cmd = new MyCommand("MST", conName,
                            (int)CommandType.Text, "select * from employees");
 
             return _cmd;
@@ -52,6 +56,11 @@ namespace WcfDBClient
 
         private void btn_sel_2_Click(object sender, EventArgs e)
         {
+            // Connection명
+            if (cbo2.SelectedIndex < 0) cbo2.SelectedIndex = 0;
+
+            string conName = cbo2.Text;
+
             // 기본 binding
             MyBindinEnum bindinEnum = MyBindinEnum.Http;
 
@@ -61,7 +70,7 @@ namespace WcfDBClient
             DBClient _cli = new DBClient(bindinEnum);
 
 
-            SvcReturnDs rtn = _cli.GetDataSet(GetCmd_Sel_2());
+            SvcReturnDs rtn = _cli.GetDataSet(GetCmd_Sel_2(conName));
 
             dgv1.DataSource = null;
             dgv2.DataSource = null;
@@ -73,11 +82,11 @@ namespace WcfDBClient
 
             }
         }
-        private MyCommand GetCmd_Sel_2()
+        private MyCommand GetCmd_Sel_2(string conName)
         {
             MyCommand _cmd = new MyCommand(
                 "MST",
-                "AWS_ORA_DB",
+                conName,
                 (int)CommandType.StoredProcedure,
                 "USP_TEST_PKG.Test_Query1"
             );
@@ -108,9 +117,15 @@ namespace WcfDBClient
 
         private void btn_ins1_Click(object sender, EventArgs e)
         {
+
+            // Connection명
+            if (cbo2.SelectedIndex < 0) cbo2.SelectedIndex = 0;
+
+            string conName = cbo2.Text;
+
             //
             List<MyCommand> myCmds = new List<MyCommand>();
-            MyCommand cmd1 = GetCmd_INS_1();
+            MyCommand cmd1 = GetCmd_INS_1(conName);
             myCmds.AddRange(new MyCommand[] { cmd1 });
             try
             {
@@ -145,7 +160,7 @@ namespace WcfDBClient
             }
         }
 
-        private MyCommand GetCmd_INS_1()
+        private MyCommand GetCmd_INS_1(string conName)
         {
             StringBuilder _strQuery1 = new StringBuilder();
             _strQuery1.AppendLine(" BEGIN ");
@@ -154,7 +169,7 @@ namespace WcfDBClient
             _strQuery1.AppendLine("   INSERT INTO  BBB_TEMP(SERIAL_NO, CREATION_DATE) VALUES ('12113',SYSDATE ); ");
             _strQuery1.AppendLine(" END;");
 
-            MyCommand _cmd = new MyCommand("MST", "AWS_ORA_DB",
+            MyCommand _cmd = new MyCommand("MST", conName,
                            (int)CommandType.Text, _strQuery1.ToString());
 
             return _cmd;
@@ -162,8 +177,14 @@ namespace WcfDBClient
 
         private void btn_ins2_Click(object sender, EventArgs e)
         {
+
+            // Connection명
+            if (cbo2.SelectedIndex < 0) cbo2.SelectedIndex = 0;
+            string conName = cbo2.Text;
+
+
             List<MyCommand> myCmds = new List<MyCommand>();
-            MyCommand cmd1 = GetCmd_INS_2();
+            MyCommand cmd1 = GetCmd_INS_2(conName);
             myCmds.AddRange(new MyCommand[] { cmd1 });
             try
             {
@@ -198,7 +219,7 @@ namespace WcfDBClient
         }
 
 
-        private MyCommand GetCmd_INS_2()
+        private MyCommand GetCmd_INS_2(string conName)
         {
             StringBuilder _strQuery1 = new StringBuilder();
             _strQuery1.AppendLine("Declare ");
@@ -228,7 +249,7 @@ namespace WcfDBClient
             _strQuery1.AppendLine("END;");
 
 
-            MyCommand _cmd = new MyCommand("MST", "AWS_ORA_DB",
+            MyCommand _cmd = new MyCommand("MST", conName,
                            (int)CommandType.Text, _strQuery1.ToString());
 
             return _cmd;
@@ -236,10 +257,15 @@ namespace WcfDBClient
 
         private void btn_ins3_Click(object sender, EventArgs e)
         {
+
+            // Connection명
+            if (cbo2.SelectedIndex < 0) cbo2.SelectedIndex = 0;
+            string conName = cbo2.Text;
+
             // Create Db Command
             List<MyCommand> mycmds = new List<MyCommand>();
-            MyCommand cmdMst = ITEM_MST_Command();
-            MyCommand cmdDtl = ITEM_DTL_Command();
+            MyCommand cmdMst = ITEM_MST_Command(conName);
+            MyCommand cmdDtl = ITEM_DTL_Command(conName);
             mycmds.AddRange(new MyCommand[] { cmdMst, cmdDtl });
 
             try
@@ -274,10 +300,10 @@ namespace WcfDBClient
             }
         }
 
-        private MyCommand ITEM_MST_Command()
+        private MyCommand ITEM_MST_Command(string conName)
         {
 
-            MyCommand _cmd = new MyCommand("MST", "AWS_ORA_DB",
+            MyCommand _cmd = new MyCommand("MST", conName,
                 (int)CommandType.StoredProcedure, "USP_TEST_PKG.Test_MST");
 
             _cmd.Parameters = new MyPara[2];
@@ -295,9 +321,9 @@ namespace WcfDBClient
 
             return _cmd;
         }
-        private MyCommand ITEM_DTL_Command()
+        private MyCommand ITEM_DTL_Command(string conName)
         {
-            MyCommand _cmd = new MyCommand("DTL", "AWS_ORA_DB",
+            MyCommand _cmd = new MyCommand("DTL", conName,
                             (int)CommandType.StoredProcedure, "USP_TEST_PKG.Test_DTL");
 
 

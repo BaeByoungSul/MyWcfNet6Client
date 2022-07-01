@@ -38,6 +38,8 @@
             this.dgv1 = new System.Windows.Forms.DataGridView();
             this.cbo1 = new System.Windows.Forms.ComboBox();
             this.btn_ins3 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbo2 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv1)).BeginInit();
             this.SuspendLayout();
@@ -144,11 +146,35 @@
             this.btn_ins3.UseVisualStyleBackColor = true;
             this.btn_ins3.Click += new System.EventHandler(this.btn_ins3_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(639, 8);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(69, 15);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "Connection";
+            // 
+            // cbo2
+            // 
+            this.cbo2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbo2.FormattingEnabled = true;
+            this.cbo2.Items.AddRange(new object[] {
+            "AWS_ORA_DB",
+            "ADB_ORA_DB"});
+            this.cbo2.Location = new System.Drawing.Point(639, 25);
+            this.cbo2.Name = "cbo2";
+            this.cbo2.Size = new System.Drawing.Size(121, 23);
+            this.cbo2.TabIndex = 19;
+            // 
             // frmOracle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 421);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cbo2);
             this.Controls.Add(this.btn_ins3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnClear);
@@ -180,5 +206,7 @@
         private DataGridView dgv1;
         private ComboBox cbo1;
         private Button btn_ins3;
+        private Label label2;
+        private ComboBox cbo2;
     }
 }

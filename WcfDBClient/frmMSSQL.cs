@@ -1,4 +1,5 @@
 using BBS;
+using BBS.WCF;
 using System.Data;
 using System.Text;
 
@@ -12,7 +13,7 @@ namespace WcfDBClient
           
         }
 
-        private void btn_sel_1_Click(object sender, EventArgs e)
+        private async void btn_sel_1_Click(object sender, EventArgs e)
         {
 
             // ±âº» binding
@@ -23,8 +24,16 @@ namespace WcfDBClient
 
             DBClient _cli = new DBClient(bindinEnum);
 
-
-            SvcReturnList<TestItemMst, TestItemDtl> rtn = _cli.GetDataList<TestItemMst, TestItemDtl>(GetCmd());
+            SvcReturnList<TestItemMst, TestItemDtl> rtn = new SvcReturnList<TestItemMst, TestItemDtl>();
+            if (radioButton1.Checked == true)
+            {
+                rtn = _cli.GetDataList<TestItemMst, TestItemDtl>(GetCmd());
+            }
+            else if (radioButton2.Checked == true)
+            {
+                rtn = await _cli.GetDataListAsync<TestItemMst, TestItemDtl>(GetCmd());
+            }
+            
 
             dgv1.DataSource = null;
             dgv2.DataSource = null;
@@ -38,8 +47,8 @@ namespace WcfDBClient
         }
         private MyCommand GetCmd()
         {
-            MyCommand _cmd = new MyCommand("MST", "AZURE_DB",
-                           (int)CommandType.StoredProcedure, "NakDongDB..USP_TEST_MST_SEL");
+            MyCommand _cmd = new MyCommand("MST", "BSBAE",
+                           (int)CommandType.StoredProcedure, "USP_TEST_MST_SEL");
 
 
 
@@ -185,8 +194,8 @@ namespace WcfDBClient
         private MyCommand ITEM_MST_Command()
         {
 
-            MyCommand _cmd = new MyCommand("MST", "AZURE_DB",
-                (int)CommandType.StoredProcedure, "NakDongDB..USP_TEST_MST_INS");
+            MyCommand _cmd = new MyCommand("MST", "BSBAE",
+                (int)CommandType.StoredProcedure, "USP_TEST_MST_INS");
 
             _cmd.Parameters = new MyPara[2];
             _cmd.Parameters[0] = new MyPara("@TEST_MST_NM", (int)SqlDbType.NVarChar, (int)ParameterDirection.Input);
@@ -205,8 +214,8 @@ namespace WcfDBClient
         }
         private MyCommand ITEM_DTL_Command()
         {
-            MyCommand _cmd = new MyCommand("DTL", "AZURE_DB",
-                            (int)CommandType.StoredProcedure, "NakDongDB..USP_TEST_DTL_INS");
+            MyCommand _cmd = new MyCommand("DTL", "BSBAE",
+                            (int)CommandType.StoredProcedure, "USP_TEST_DTL_INS");
 
 
             _cmd.Parameters = new MyPara[3];

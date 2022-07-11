@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,14 +12,10 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+ 
 
 namespace BBS.WCF
 {
-    public enum MyBindinEnum
-    {
-        Http,
-        NetTcp
-    }
     public class SvcReturnList<T>
     {
         public SvcReturnList()
@@ -63,8 +60,8 @@ namespace BBS.WCF
     {
         //private EndpointAddress address_http = new EndpointAddress("http://146.56.155.85:9110/DBService");
         //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://146.56.155.85:9120/DBService");
-        private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9110/DBService");
-        private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9120/DBService");
+        //private EndpointAddress address_http = new EndpointAddress("http://172.20.105.36:9110/DBService");
+        //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://172.20.105.36:9120/DBService");
         //private EndpointAddress address_http = new EndpointAddress("http://localhost:9110/DBService");
         //private EndpointAddress address_tcp = new EndpointAddress("net.tcp://localhost:9120/DBService ");
 
@@ -72,6 +69,26 @@ namespace BBS.WCF
         private IDBService MyChannel { get; set; }
         public DBClient(MyBindinEnum myBindin)
         {
+            Console.WriteLine(System.Environment.CurrentDirectory);
+            Console.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            Console.WriteLine(System.AppDomain.CurrentDomain.BaseDirectory);
+            Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
+
+            //var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var basePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
+            var builder = new ConfigurationBuilder()
+                        //.SetBasePath(Directory.GetCurrentDirectory())
+                        .SetBasePath(basePath)
+                        .AddJsonFile("appsettings.json", optional: false);
+            
+            IConfiguration config = builder.Build();
+            string sAddr_http = config.GetValue<string>("DBWcfSetting:Address_http");
+            string sAddr_tcp = config.GetValue<string>("DBWcfSetting:Address_tcp");
+            EndpointAddress address_http = new EndpointAddress(sAddr_http);
+            EndpointAddress address_tcp = new EndpointAddress(sAddr_tcp);
+
+
             if (myBindin == MyBindinEnum.Http)
             {
                 BasicHttpBinding binding = GetHttpBinding();

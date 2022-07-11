@@ -1,4 +1,4 @@
-﻿using BBS;
+﻿using BBS.WCF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using BBS;
 
 namespace WcfDBClient
 {

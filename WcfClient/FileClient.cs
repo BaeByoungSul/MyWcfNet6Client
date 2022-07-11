@@ -40,11 +40,14 @@ namespace BBS.WCF
 
             MyChannel = MyFactory.CreateChannel();
         }
-        public CheckFileResponse SeverCheckFile(string fileName)
+        public CheckFileResponse CheckFile(string fileName)
         {
             return MyChannel.CheckFile(fileName);
         }
-
+        public async Task<CheckFileResponse> CheckFileAsync(string fileName)
+        {
+            return await MyChannel.CheckFileAsync(fileName);
+        }
         public void UploadFile(FileData uploadFile)
         {
             try
@@ -56,24 +59,35 @@ namespace BBS.WCF
                 throw ;
             }
         }
+        public async Task UploadFileAsync(FileData uploadFile)
+        {
+            try
+            {
+                await MyChannel.UploadFileAsync(uploadFile);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         /// <summary>
         /// task.run(action) == Task.Factory.StartNew(action);
         /// </summary>
         /// <param name="uploadFile"></param>
         /// <returns></returns>
-        public Task UploadFileAsync(FileData uploadFile)
-        {
-            try
-            {
-                return Task.Factory.StartNew(() => MyChannel.UploadFile(uploadFile));
-                //return Task.Run(() =>  MyChannel.UploadFile(uploadFile));
-            }
-            catch (Exception )
-            {
+        //public Task UploadFileAsync(FileData uploadFile)
+        //{
+        //    try
+        //    {
+        //        return Task.Factory.StartNew(() => MyChannel.UploadFile(uploadFile));
+        //        //return Task.Run(() =>  MyChannel.UploadFile(uploadFile));
+        //    }
+        //    catch (Exception )
+        //    {
 
-                throw ;
-            }            
-        }
+        //        throw ;
+        //    }            
+        //}
 
         public FileData DownloadFile(DownloadRequest request)
         {
@@ -87,23 +101,35 @@ namespace BBS.WCF
                 throw ;
             }
         }
-     
-        public Task<FileData> DownloadFileAsync(DownloadRequest request)
+        public async Task<FileData> DownloadFileAsync(DownloadRequest request)
         {
             try
             {
-                //Func<FileData> function = new Func<FileData>(() => MyChannel.DownloadFile(request));
-                //return Task.Factory.StartNew<FileData>(function);
-
-                return Task.Factory.StartNew<FileData>(() => MyChannel.DownloadFile(request));
+                return await  MyChannel.DownloadFileAsync(request);
 
             }
-            catch (Exception )
+            catch (Exception)
             {
 
-                throw ;
+                throw;
             }
         }
+        //public Task<FileData> DownloadFileAsync(DownloadRequest request)
+        //{
+        //    try
+        //    {
+        //        //Func<FileData> function = new Func<FileData>(() => MyChannel.DownloadFile(request));
+        //        //return Task.Factory.StartNew<FileData>(function);
+
+        //        return Task.Factory.StartNew<FileData>(() => MyChannel.DownloadFile(request));
+
+        //    }
+        //    catch (Exception )
+        //    {
+
+        //        throw ;
+        //    }
+        //}
         private BasicHttpBinding GetHttpBinding()
         {
             BasicHttpBinding binding = new BasicHttpBinding();

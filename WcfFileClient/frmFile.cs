@@ -1,4 +1,4 @@
-using BBS;
+using BBS.WCF;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -309,6 +309,11 @@ namespace WcfFileClient
                 MessageBox.Show(ex.ToString());
 
             }
+        }
+
+        private void btn_t2_upload2_Click(object sender, EventArgs e)
+        {
+
         }
 
         /**********

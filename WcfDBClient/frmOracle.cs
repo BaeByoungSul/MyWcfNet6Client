@@ -32,18 +32,26 @@ namespace WcfDBClient
             if (cbo1.Text.Equals("Http")) bindinEnum = MyBindinEnum.Http;
             else if (cbo1.Text.Equals("NetTcp")) bindinEnum = MyBindinEnum.NetTcp;
 
-            DBClient _cli = new DBClient(bindinEnum);
-
-            SvcReturnDs rtn = _cli.GetDataSet(GetCmd_Sel_1(conName));
-
-            dgv1.DataSource = null;
-            dgv2.DataSource = null;
-
-            if (rtn.ReturnCD == "OK")
+            try
             {
-                dgv1.DataSource = rtn.ReturnDs?.Tables[0];
-                
+                DBClient _cli = new DBClient(bindinEnum);
+
+                SvcReturnDs rtn = _cli.GetDataSet(GetCmd_Sel_1(conName));
+
+                dgv1.DataSource = null;
+                dgv2.DataSource = null;
+
+                if (rtn.ReturnCD == "OK")
+                {
+                    dgv1.DataSource = rtn.ReturnDs?.Tables[0];
+
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
         }
         private MyCommand GetCmd_Sel_1(string conName)
         {

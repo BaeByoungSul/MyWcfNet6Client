@@ -11,9 +11,9 @@ namespace WcfDBClient
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new frmMSSQL());
+            //Application.Run(new frmMSSQL());
             //Application.Run(new frmOracle());
-            //Application.Run(new frmMySQL());
+            Application.Run(new frmMySQL());
             //Application.Run(new frmOracleWallet());
         }
     }

@@ -161,7 +161,6 @@
             this.cbo2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbo2.FormattingEnabled = true;
             this.cbo2.Items.AddRange(new object[] {
-            "AWS_ORA_DB",
             "ADB_ORA_DB"});
             this.cbo2.Location = new System.Drawing.Point(639, 25);
             this.cbo2.Name = "cbo2";

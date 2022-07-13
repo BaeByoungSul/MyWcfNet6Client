@@ -75,12 +75,13 @@ namespace BBS.WCF
             Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
 
             //var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var basePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-
+            //var basePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            
+            var basePath = System.Environment.CurrentDirectory;
             var builder = new ConfigurationBuilder()
-                        //.SetBasePath(Directory.GetCurrentDirectory())
-                        .SetBasePath(basePath)
-                        .AddJsonFile("appsettings.json", optional: false);
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        //.SetBasePath(basePath)
+                        .AddJsonFile("appsettings.json", optional: false,reloadOnChange:true);
             
             IConfiguration config = builder.Build();
             string sAddr_http = config.GetValue<string>("DBWcfSetting:Address_http");

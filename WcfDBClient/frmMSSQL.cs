@@ -22,32 +22,41 @@ namespace WcfDBClient
             if (cbo1.Text.Equals("Http")) bindinEnum = MyBindinEnum.Http;
             else if (cbo1.Text.Equals("NetTcp")) bindinEnum = MyBindinEnum.NetTcp;
 
-            DBClient _cli = new DBClient(bindinEnum);
-
-            SvcReturnList<TestItemMst, TestItemDtl> rtn = new SvcReturnList<TestItemMst, TestItemDtl>();
-            if (radioButton1.Checked == true)
+            try
             {
-                rtn = _cli.GetDataList<TestItemMst, TestItemDtl>(GetCmd());
+                DBClient _cli = new DBClient(bindinEnum);
+
+                SvcReturnList<TestItemMst, TestItemDtl> rtn = new SvcReturnList<TestItemMst, TestItemDtl>();
+                if (radioButton1.Checked == true)
+                {
+                    rtn = _cli.GetDataList<TestItemMst, TestItemDtl>(GetCmd());
+                }
+                else if (radioButton2.Checked == true)
+                {
+                    rtn = await _cli.GetDataListAsync<TestItemMst, TestItemDtl>(GetCmd());
+                }
+
+
+                dgv1.DataSource = null;
+                dgv2.DataSource = null;
+
+                if (rtn.ReturnCD == "OK")
+                {
+                    dgv1.DataSource = rtn.ReturnList1;
+                    dgv2.DataSource = rtn.ReturnList2;
+
+                }
             }
-            else if (radioButton2.Checked == true)
+            catch (Exception ex)
             {
-                rtn = await _cli.GetDataListAsync<TestItemMst, TestItemDtl>(GetCmd());
-            }
-            
-
-            dgv1.DataSource = null;
-            dgv2.DataSource = null;
-
-            if (rtn.ReturnCD == "OK")
-            {
-                dgv1.DataSource = rtn.ReturnList1;
-                dgv2.DataSource = rtn.ReturnList2;
+                MessageBox.Show(ex.ToString());
 
             }
+
         }
         private MyCommand GetCmd()
         {
-            MyCommand _cmd = new MyCommand("MST", "BSBAE",
+            MyCommand _cmd = new MyCommand("MST", "HOME",
                            (int)CommandType.StoredProcedure, "USP_TEST_MST_SEL");
 
 
@@ -254,6 +263,11 @@ namespace WcfDBClient
         {
             dgv1.DataSource = null;
             dgv2.DataSource = null;
+        }
+
+        private void frmMSSQL_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
